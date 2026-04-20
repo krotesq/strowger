@@ -1,0 +1,53 @@
+services:
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    container_name: strowger-mediamtx
+    restart: unless-stopped
+    ports:
+      # RTSP
+      - "8554:8554"       # RTSP (TCP)
+      - "8000:8000/udp"   # RTP (RTSP UDP transport)
+      - "8001:8001/udp"   # RTCP (RTSP UDP transport)
+      # RTMP
+      - "1935:1935"       # RTMP
+      # HLS
+      - "8888:8888"       # HLS
+      # WebRTC
+      - "8889:8889"       # WebRTC HTTP
+      - "8189:8189/udp"   # WebRTC ICE/UDP
+      # SRT
+      - "8890:8890/udp"   # SRT
+      # Management
+      - "9997:9997"       # Control API
+      - "9998:9998"       # Metrics (Prometheus)
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml:ro
+    networks:
+      - strowger
+
+  postgres:
+    image: postgres:17
+    container_name: strowger-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: strowger
+      POSTGRES_PASSWORD: strowger
+      POSTGRES_DB: strowger
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U strowger"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - strowger
+
+volumes:
+  postgres_data:
+
+networks:
+  strowger:
+    driver: bridge
