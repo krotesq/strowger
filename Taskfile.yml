@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+
+tasks:
+  default:
+    desc: Runs the project
+    cmds:
+      - go run cmd/strowger/main.go
+    silent: true
