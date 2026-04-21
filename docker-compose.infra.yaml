@@ -22,8 +22,6 @@ services:
       - "9998:9998"       # Metrics (Prometheus)
     volumes:
       - ./mediamtx.yml:/mediamtx.yml:ro
-    networks:
-      - strowger
 
   postgres:
     image: postgres:17
@@ -42,12 +40,16 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - strowger
+
+  adminer:
+    image: adminer:latest
+    container_name: strowger-adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres_data:
-
-networks:
-  strowger:
-    driver: bridge
