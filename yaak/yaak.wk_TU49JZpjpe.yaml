@@ -1,0 +1,15 @@
+type: workspace
+model: workspace
+id: wk_TU49JZpjpe
+createdAt: 2026-01-22T20:53:03.306448
+updatedAt: 2026-04-23T11:36:13.401690
+authentication: {}
+authenticationType: null
+description: ''
+headers: []
+name: Strowger
+encryptionKeyChallenge: null
+settingValidateCertificates: true
+settingFollowRedirects: true
+settingRequestTimeout: 0
+settingDnsOverrides: []

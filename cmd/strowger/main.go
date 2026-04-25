@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
@@ -11,6 +13,7 @@ import (
 	"github.com/go-chi/cors"
 
 	"github.com/krotesq/strowger/internal/account"
+	"github.com/krotesq/strowger/internal/auth"
 	"github.com/krotesq/strowger/internal/db"
 	"github.com/krotesq/strowger/internal/mediamtx"
 	"github.com/krotesq/strowger/internal/source"
@@ -46,15 +49,22 @@ func main() {
 	// create api router
 	routerApi := chi.NewRouter()
 
-	// attach sub routers
+	// the account router has public and protected routes so we
+	// mount the account router seperate and configure auth inside
+	// we could move the /login, /register, /logout & /reset to the auth package sometime
 	routerApi.Mount("/account", account.RoutesWithPool(pool))
-	routerApi.Mount("/source", source.RoutesWithPool(pool))
-	routerApi.Mount("/target", target.RoutesWithPool(pool))
-	routerApi.Mount("/mediamtx", mediamtx.RoutesWithPool(pool))
-	
+
+	// protected routes
+	routerApi.Group(func(r chi.Router) {
+		r.Use(auth.Auth)
+		r.Mount("/source", source.RoutesWithPool(pool))
+		r.Mount("/target", target.RoutesWithPool(pool))
+		r.Mount("/mediamtx", mediamtx.RoutesWithPool(pool))
+	})
+
 	// create web router
 	routerWeb := chi.NewRouter()
-	
+
 	// add fs to web router
 	webDir := filepath.Join(".", "web")
 	fileServer := http.StripPrefix("/", http.FileServer(http.Dir(webDir)))
@@ -65,7 +75,10 @@ func main() {
 	router.Mount("/", routerWeb)
 
 	// run server
-	if err := http.ListenAndServe(":3000", router); err != nil {
+	host := os.Getenv("HOST")
+	port := os.Getenv("PORT")
+	log.Printf("Server running at %s:%s", host, port)
+	if err := http.ListenAndServe(fmt.Sprintf("%s:%s", host, port), router); err != nil {
 		log.Fatalf("error: %s", err.Error())
 	}
 }

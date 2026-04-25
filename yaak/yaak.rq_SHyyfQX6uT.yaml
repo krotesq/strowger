@@ -1,0 +1,27 @@
+type: http_request
+model: http_request
+id: rq_SHyyfQX6uT
+createdAt: 2026-04-23T09:18:21.941148
+updatedAt: 2026-04-23T11:38:22.888163
+workspaceId: wk_TU49JZpjpe
+folderId: fl_PpoMj427zZ
+authentication: {}
+authenticationType: null
+body:
+  text: |-
+    {
+      "username": "test",
+      "password": "test"
+    }
+bodyType: application/json
+description: ''
+headers:
+- enabled: true
+  name: Content-Type
+  value: application/json
+  id: YeIPgnkniB
+method: POST
+name: /
+sortPriority: 0.0
+url: http://localhost:3000/api/account
+urlParameters: []

@@ -7,7 +7,6 @@ import (
 
 // this function takes any type as dst, but usually struct
 // can be called like this: ParseBody(r.Body, &rb)
-// 
 func ParseBody[T any](body io.Reader, dst *T) error {
 	dec := json.NewDecoder(body)
 	dec.DisallowUnknownFields()

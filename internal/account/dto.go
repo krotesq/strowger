@@ -2,7 +2,7 @@ package account
 
 import "time"
 
-type accountDto struct {
+type accountDTO struct {
 	UUID                string    `json:"uuid"`
 	Username            string    `json:"username"`
 	Active              bool      `json:"active"`
@@ -10,7 +10,12 @@ type accountDto struct {
 	CreatedAt           time.Time `json:"createdAt"`
 }
 
-type loginDto struct {
+type loginDTO struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type createDTO struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }

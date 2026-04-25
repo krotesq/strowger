@@ -1,0 +1,27 @@
+type: http_request
+model: http_request
+id: rq_4aQ8t7MUKR
+createdAt: 2026-04-21T13:37:22.564800
+updatedAt: 2026-04-23T11:38:22.900172
+workspaceId: wk_TU49JZpjpe
+folderId: fl_PpoMj427zZ
+authentication: {}
+authenticationType: null
+body:
+  text: |-
+    {
+      "username": "admin",
+      "password": "admin"
+    }
+bodyType: application/json
+description: ''
+headers:
+- enabled: true
+  name: Content-Type
+  value: application/json
+  id: WRMU75MHEw
+method: POST
+name: /login
+sortPriority: 4000.0
+url: http://localhost:3000/api/account/login
+urlParameters: []

@@ -2,9 +2,20 @@
 
 version: '3'
 
+dotenv: ['.env']
+
 tasks:
   default:
-    desc: Runs the project
+    desc: Runs the project in dev mode
     cmds:
       - go run cmd/strowger/main.go
-    silent: true
+
+  infra:
+    desc: Runs all needed infra
+    cmds:
+      - docker compose -f docker-compose.infra.yaml up -d
+
+  migrate:
+    desc: Runs all migrations
+    cmds:
+      - tern migrate --migrations migrations
