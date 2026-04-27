@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_xfzWxQmJSv
-createdAt: 2026-04-21T12:45:42.808737
-updatedAt: 2026-04-27T22:15:35.696148600
+id: rq_SLBaYBAGYP
+createdAt: 2026-04-27T20:16:46.914933800
+updatedAt: 2026-04-27T20:24:41.720915
 workspaceId: wk_TU49JZpjpe
 folderId: fl_PpoMj427zZ
 authentication: {}
@@ -12,7 +12,7 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: '{id}'
-sortPriority: 5000.0
-url: http://localhost:3000/api/account/0478c69d-d980-46a1-9774-c5b49bbca7ec
+name: /test
+sortPriority: 4000.0
+url: http://localhost:3000/api/account/test
 urlParameters: []

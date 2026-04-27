@@ -26,21 +26,14 @@ type Response struct {
 }
 
 type Builder struct {
-	writer        http.ResponseWriter
-	headerWritten bool
-	response      *Response
+	writer   http.ResponseWriter
+	response *Response
 }
 
-func NewBuilder(w http.ResponseWriter, response *Response) *Builder {
-
-	if response == nil {
-		response = &Response{}
-	}
-
+func NewBuilder(w http.ResponseWriter) *Builder {
 	return &Builder{
-		writer:        w,
-		headerWritten: false,
-		response:      response,
+		writer:   w,
+		response: &Response{},
 	}
 }
 
@@ -52,11 +45,11 @@ func (builder *Builder) SetBody(body Body) {
 	builder.response.body = body
 }
 
-func (builder *Builder) SetCustomCookie(cookie http.Cookie) {
+func (builder *Builder) SetCookie(cookie http.Cookie) {
 	builder.response.cookies = append(builder.response.cookies, &cookie)
 }
 
-func (builder *Builder) SetCookie(name, value string) {
+func (builder *Builder) SetSimpleCookie(name, value string) {
 	builder.response.cookies = append(builder.response.cookies, &http.Cookie{
 		Name:     name,
 		Value:    value,
@@ -68,22 +61,19 @@ func (builder *Builder) SetCookie(name, value string) {
 
 func (builder *Builder) SetHeader(key, value string) {
 	builder.response.headers = append(builder.response.headers, &Header{
-		Key: key,
+		Key:   key,
 		Value: value,
 	})
 }
 
 func (builder *Builder) Send() {
-	// set default header
-	builder.SetHeader("Content-Type", "application/json")
-
 	// write headers to buffer
-	for _, header := range(builder.response.headers) {
+	for _, header := range builder.response.headers {
 		builder.writer.Header().Set(header.Key, header.Value)
 	}
 
 	// write cookies to buffer
-	for _, cookie := range(builder.response.cookies) {
+	for _, cookie := range builder.response.cookies {
 		http.SetCookie(builder.writer, cookie)
 	}
 
@@ -100,14 +90,25 @@ func (builder *Builder) Send() {
 	log.Printf("Response: %d - %s - %v", builder.response.status, builder.response.body.Message, builder.response.body.Data)
 }
 
+func Send(w http.ResponseWriter, status int, message string, data any) {
+	builder := NewBuilder(w)
+	builder.SetHeader("Content-Type", "application/json")
+	builder.SetStatus(status)
+	builder.SetBody(Body{
+		Data: data,
+		Message: message,
+	})
+	builder.Send()
+}
 
-func SendSimple(w http.ResponseWriter, status int, message string, data any) {
-	builder := NewBuilder(w, &Response{
-		status: status,
-		body: Body{
-			Message: message,
-			Data: data,
-		},
+func SendWithSimpleCookie(w http.ResponseWriter, status int, message string, data any, cookieName, cookieValue string) {
+	builder := NewBuilder(w)
+	builder.SetHeader("Content-Type", "application/json")
+	builder.SetSimpleCookie(cookieName, cookieValue)
+	builder.SetStatus(status)
+	builder.SetBody(Body{
+		Data: data,
+		Message: message,
 	})
 	builder.Send()
 }

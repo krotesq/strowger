@@ -3,7 +3,7 @@ package account
 import "time"
 
 type accountDTO struct {
-	UUID                string    `json:"uuid"`
+	ID                  string    `json:"id"`
 	Username            string    `json:"username"`
 	Active              bool      `json:"active"`
 	FailedLoginAttempts int       `json:"failedLoginAttempts"`

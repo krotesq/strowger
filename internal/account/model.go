@@ -3,7 +3,7 @@ package account
 import "time"
 
 type account struct {
-	UUID                string    `db:"uuid"`
+	ID                  string    `db:"id"`
 	Username            string    `db:"username"`
 	PasswordHash        string    `db:"password_hash"`
 	Active              bool      `db:"active"`

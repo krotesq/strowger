@@ -1,6 +1,6 @@
 -- Write your migrate up statements here
 CREATE TABLE target_rtmp (
-  target_id UUID PRIMARY KEY references target(uuid) ON DELETE CASCADE,
+  target_id UUID PRIMARY KEY references target(id) ON DELETE CASCADE,
   url TEXT NOT NULL,
   stream_key TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
