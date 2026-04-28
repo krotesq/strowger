@@ -26,6 +26,7 @@ func RoutesWithPool(pool *pgxpool.Pool) chi.Router {
 		r.Patch("/{id}/deactivate", handler.deactivateByID)
 		r.Patch("/{id}/activate", handler.activateByID)
 		r.Delete("/{id}", handler.deleteByID)
+		r.Get("/me", handler.me)
 	})
 
 	return router

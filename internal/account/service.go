@@ -74,3 +74,12 @@ func (service *service) login(ctx context.Context, username, password string) (*
 
 	return account, token, nil
 }
+
+
+func (service *service) me(ctx context.Context) (*account, error) {
+	id, ok := auth.AccountIDFromContext(ctx)
+	if !ok {
+		return nil, errors.New("Unable to load id from context")
+	}
+	return service.repository.findByID(ctx, id)
+}

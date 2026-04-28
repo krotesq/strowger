@@ -99,3 +99,12 @@ func (handler *handler) login(w http.ResponseWriter, r *http.Request) {
 func (handler *handler) logout(w http.ResponseWriter, r *http.Request) {
 	response.SendWithSimpleCookie(w, http.StatusOK, "Account logged out.", nil, "access_token", "")
 }
+
+func (handler *handler) me(w http.ResponseWriter, r *http.Request) {
+	account, err := handler.service.me(r.Context())
+	if err != nil {
+		response.Send(w, http.StatusInternalServerError, "Unable to load account.", nil)
+		return
+	}
+	response.Send(w, http.StatusOK, "Account found.", toAccountDTO(account))
+}
