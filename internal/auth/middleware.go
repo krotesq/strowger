@@ -28,7 +28,7 @@ func Auth(next http.Handler) http.Handler {
 		// get jwt cookie from request
 		cookie, err := r.Cookie("access_token")
 		if errors.Is(err, http.ErrNoCookie) {
-			response.Send(w, http.StatusUnauthorized, "Auth failed", nil)
+			response.Send(w, http.StatusUnauthorized, "Missing JWT", nil)
 			return
 		}
 		if err != nil {
@@ -39,8 +39,8 @@ func Auth(next http.Handler) http.Handler {
 
 		// verify jwt
 		secretBase64 := os.Getenv("JWT_SECRET")
-		sub, err := ValidateToken(cookie.Value, secretBase64)
-		if err != nil {
+		sub, err := ValidateJWT(cookie.Value, secretBase64)
+		if err != nil { 
 			response.Send(w, http.StatusUnauthorized, "Auth failed", nil)
 			return
 		}

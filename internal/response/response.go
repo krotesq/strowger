@@ -41,8 +41,11 @@ func (builder *Builder) SetStatus(status int) {
 	builder.response.status = status
 }
 
-func (builder *Builder) SetBody(body Body) {
-	builder.response.body = body
+func (builder *Builder) SetBody(message string, data any) {
+	builder.response.body = Body{
+		Message: message,
+		Data:    data,
+	}
 }
 
 func (builder *Builder) SetCookie(cookie http.Cookie) {
@@ -94,10 +97,7 @@ func Send(w http.ResponseWriter, status int, message string, data any) {
 	builder := NewBuilder(w)
 	builder.SetHeader("Content-Type", "application/json")
 	builder.SetStatus(status)
-	builder.SetBody(Body{
-		Data: data,
-		Message: message,
-	})
+	builder.SetBody(message, data)
 	builder.Send()
 }
 
@@ -106,9 +106,6 @@ func SendWithSimpleCookie(w http.ResponseWriter, status int, message string, dat
 	builder.SetHeader("Content-Type", "application/json")
 	builder.SetSimpleCookie(cookieName, cookieValue)
 	builder.SetStatus(status)
-	builder.SetBody(Body{
-		Data: data,
-		Message: message,
-	})
+	builder.SetBody(message, data)
 	builder.Send()
 }

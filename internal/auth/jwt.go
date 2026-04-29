@@ -1,31 +1,40 @@
 package auth
 
-
 import (
-	"errors"
 	"encoding/base64"
+	"errors"
+	"os"
+	"strconv"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func GenerateToken(sub, iss, secretBase64 string) (string, error) {
+func GenerateJWT(sub, iss, secretBase64 string) (string, error) {
 	keyBytes, err := base64.StdEncoding.DecodeString(secretBase64)
+	if err != nil {
+		return "", err
+	}
+
+	exp_min_str := os.Getenv("JWT_EXP_MINUTES")
+	exp_min, err := strconv.Atoi(exp_min_str)
 	if err != nil {
 		return "", err
 	}
 
 	t := jwt.NewWithClaims(
 		jwt.SigningMethodHS256,
-		jwt.MapClaims{ 
-	    "iss": iss, 
-	    "sub": sub,
-  		},
+		jwt.MapClaims{
+			"iss": iss,
+			"sub": sub,
+			"exp": time.Now().Add(time.Minute * time.Duration(exp_min)).Unix(),
+		},
 	)
 	s, err := t.SignedString(keyBytes)
 	return s, err
 }
 
-func ValidateToken(tokenString, secretBase64 string) (string, error) {
+func ValidateJWT(tokenString, secretBase64 string) (string, error) {
 	keyBytes, err := base64.StdEncoding.DecodeString(secretBase64)
 	if err != nil {
 		return "", err

@@ -16,7 +16,8 @@ func RoutesWithPool(pool *pgxpool.Pool) chi.Router {
 
 	// public
 	router.Post("/login", handler.login)
-	router.Get("/logout", handler.logout)
+	router.Post("/logout", handler.logout)
+	router.Post("/refresh", handler.refresh)
 
 	// protected
 	router.Group(func(r chi.Router) {

@@ -2,7 +2,7 @@
 CREATE TABLE refresh_token (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   account_id UUID NOT NULL REFERENCES account(id) ON DELETE CASCADE,
-  token_hash TEXT NOT NULL UNIQUE,
+  token_hash BYTEA NOT NULL UNIQUE,
   expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
   revoked_at TIMESTAMP WITH TIME ZONE NULL,
   user_agent TEXT NULL,

@@ -87,13 +87,39 @@ func (handler *handler) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	account, s, err := handler.service.login(r.Context(), loginDTO.Username, loginDTO.Password)
+	ip := util.GetClientIP(r)
+
+	account, accessToken, refreshToken, err := handler.service.login(r.Context(), loginDTO.Username, loginDTO.Password, r.UserAgent(), ip)
 	if err != nil {
 		response.Send(w, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
-	response.SendWithSimpleCookie(w, http.StatusOK, "Account logged in.", toAccountDTO(account), "access_token", s)
+	res := response.NewBuilder(w)
+	res.SetStatus(201)
+	res.SetSimpleCookie("access_token", accessToken)
+	res.SetSimpleCookie("refresh_token", refreshToken)
+	res.SetHeader("Content-Type", "application/json")
+	res.SetBody("Account logged in", toAccountDTO(account))
+	res.Send()
+}
+
+func (handler *handler) refresh(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("refresh_token")
+	refreshToken, jwt, err := handler.service.refresh(r.Context(), cookie.Value)
+	if err != nil {
+		response.Send(w, 500, err.Error(), nil)
+		return
+	}
+
+	// note an mich selber: zu res muss expire hinzugefügt werden (refreshToken.expires_at == cookie.expire)
+	res := response.NewBuilder(w)
+	res.SetStatus(201)
+	res.SetHeader("Content-Type", "application/json")
+	res.SetSimpleCookie("access_token", jwt)
+	res.SetSimpleCookie("refresh_token", refreshToken)
+	res.SetBody("Token refreshed", nil)
+	res.Send()
 }
 
 func (handler *handler) logout(w http.ResponseWriter, r *http.Request) {
