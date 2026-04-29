@@ -79,7 +79,7 @@ func (repository *repository) createWithRtmp(ctx context.Context, name string, d
 	return &_source, &_rtmp, err
 }
 
-func (repository *repository) delete(ctx context.Context, id string) error {
+func (repository *repository) deleteByID(ctx context.Context, id string) error {
 	const query = `
 		DELETE FROM source
 		WHERE uuid = $1
