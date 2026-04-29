@@ -3,7 +3,7 @@ package target
 import "time"
 
 type target struct {
-	UUID         string    `db:"uuid"`
+	ID           string    `db:"uuid"`
 	Name         string    `db:"name"`
 	Description  string    `db:"description"`
 	TargetTypeID string    `db:"target_type_id"`
@@ -12,7 +12,7 @@ type target struct {
 }
 
 type _type struct {
-	UUID        string    `db:"uuid"`
+	ID          string    `db:"uuid"`
 	Name        string    `db:"name"`
 	Description string    `db:"description"`
 	CreatedAt   time.Time `db:"created_at"`

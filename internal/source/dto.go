@@ -3,7 +3,7 @@ package source
 import "time"
 
 type sourceDto struct {
-	UUID         string    `json:"uuid"`
+	ID           string    `json:"uuid"`
 	Name         string    `json:"name"`
 	Description  string    `json:"description"`
 	SourceTypeID string    `json:"sourceTypeId"`

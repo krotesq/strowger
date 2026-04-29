@@ -3,7 +3,7 @@ package source
 // takes an source and returns the source dto
 func toSourceDto(source *source) sourceDto {
 	return sourceDto{
-		UUID:         source.UUID,
+		ID:           source.ID,
 		Name:         source.Name,
 		Description:  source.Description,
 		SourceTypeID: source.SourceTypeID,

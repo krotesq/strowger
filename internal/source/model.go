@@ -3,7 +3,7 @@ package source
 import "time"
 
 type source struct {
-	UUID         string    `db:"uuid"`
+	ID           string    `db:"uuid"`
 	Name         string    `db:"name"`
 	Description  string    `db:"description"`
 	SourceTypeID string    `db:"source_type_id"`
@@ -12,7 +12,7 @@ type source struct {
 }
 
 type _type struct {
-	UUID        string    `db:"uuid"`
+	ID          string    `db:"uuid"`
 	Name        string    `db:"name"`
 	Description string    `db:"description"`
 	CreatedAt   time.Time `db:"created_at"`

@@ -3,7 +3,7 @@ package target
 // takes an target and returns the target dto
 func toTargetDto(target *target) targetDto {
 	return targetDto{
-		UUID:         target.UUID,
+		ID:           target.ID,
 		Name:         target.Name,
 		Description:  target.Description,
 		TargetTypeID: target.TargetTypeID,

@@ -3,7 +3,7 @@ package target
 import "time"
 
 type targetDto struct {
-	UUID         string    `json:"uuid"`
+	ID           string    `json:"uuid"`
 	Name         string    `json:"name"`
 	Description  string    `json:"description"`
 	TargetTypeID string    `json:"targetTypeId"`
